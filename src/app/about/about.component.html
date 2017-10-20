@@ -57,7 +57,7 @@
         <!--<p>Display the details of the corporate leaders here</p>-->
         <md-list *ngIf="leaders">
             <md-list-item *ngFor="let list of leaders">
-                <span><img src={{list.image}} alt={{list.name}} height=30 width=41></span>
+                <img md-list-avatar src={{list.image}} alt={{list.name}}>
                 <h1 md-line> {{list.name}} </h1>
                 <p md-line>
                     <span> {{list.designation}} </span>
@@ -67,5 +67,9 @@
                 </p>
             </md-list-item>
         </md-list>
+        <div [hidden]="leaders">
+            <md-spinner></md-spinner>
+            <h4>Loading . . . Please Wait</h4>
+        </div>
     </div>
 </div>
