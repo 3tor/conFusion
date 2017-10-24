@@ -1,11 +1,13 @@
 // import { Component, OnInit, Input } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Dish } from '../shared/dish';
 import { DishService } from '../services/dish.service';
+import { Comment } from '../shared/comment';
 
 import 'rxjs/add/operator/switchMap';
 // const DISH = {
@@ -60,10 +62,15 @@ export class DishdetailComponent implements OnInit {
   dishIds: number[];
   prev: number;
   next: number;
+  commentForm: FormGroup;
+  comment: Comment;
 
   constructor(private dishservice: DishService,
     private route: ActivatedRoute,
-    private location: Location) { }
+    private location: Location,
+    private fb: FormBuilder) {
+      this.createCommentForm();
+     }
 
   ngOnInit() {
     // let id = +this.route.snapshot.params['id'];
@@ -83,6 +90,14 @@ export class DishdetailComponent implements OnInit {
     let index = this.dishIds.indexOf(dishId);
     this.prev = this.dishIds[(this.dishIds.length + index - 1) % this.dishIds.length];
     this.next = this.dishIds[(this.dishIds.length + index + 1) % this.dishIds.length];
+  }
+
+  createCommentForm() {
+    this.commentForm = this.fb.group({
+      rating: '',
+      comment: '',
+      author: ''
+    })
   }
 
 }

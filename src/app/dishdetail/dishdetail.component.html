@@ -1,51 +1,83 @@
 <!--<p>
   dishdetail works!
 </p>-->
-<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign.gt-md="space-around center"
-  fxLayoutGap="10px" fxLayoutGap.xs="0">
+<div class="container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign.gt-md="space-around center" fxLayoutGap="10px" fxLayoutGap.xs="0">
 
-  <div fxFlex="40" *ngIf="dish">
-    <!--<p>Display the details of the Dish here</p>-->
-    <md-card>
-      <md-card-header>
-        <md-card-title>
-          <h3>{{dish.name | uppercase}}</h3>
-        </md-card-title>
-      </md-card-header>
-      <img md-card-image src={{dish.image}} alt={{dish.name}}>
-      <md-card-content>
-        <p>{{dish.description}}
-        </p>
-      </md-card-content>
-      <md-card-actions>
-        <button md-button [routerLink]="['/dishdetail', prev]"><span class="fa fa-chevron-left fa-lg"></span></button>
-        <button md-button (click)="goBack()">BACK</button>
-        <button md-button>LIKE</button>
-        <button md-button>SHARE</button>
-        <span class="flex-spacer"></span>
-        <button md-button [routerLink]="['/dishdetail', next]"><span class="fa fa-chevron-right fa-lg"></span></button>
-      </md-card-actions>
-    </md-card>
-  </div>
+    <div fxFlex="40" *ngIf="dish">
+        <!--<p>Display the details of the Dish here</p>-->
+        <md-card>
+            <md-card-header>
+                <md-card-title>
+                    <h3>{{dish.name | uppercase}}</h3>
+                </md-card-title>
+            </md-card-header>
+            <img md-card-image src={{dish.image}} alt={{dish.name}}>
+            <md-card-content>
+                <p>{{dish.description}}
+                </p>
+            </md-card-content>
+            <md-card-actions>
+                <button md-button [routerLink]="['/dishdetail', prev]"><span class="fa fa-chevron-left fa-lg"></span></button>
+                <button md-button (click)="goBack()">BACK</button>
+                <button md-button>LIKE</button>
+                <button md-button>SHARE</button>
+                <span class="flex-spacer"></span>
+                <button md-button [routerLink]="['/dishdetail', next]"><span class="fa fa-chevron-right fa-lg"></span></button>
+            </md-card-actions>
+        </md-card>
+    </div>
 
-  <div fxFlex="40" *ngIf="dish">
-    <!--<p>Display the list of comments here</p>-->
-    <md-list>
-      <h3>Comments</h3>
-      <md-list-item *ngFor="let list of dish.comments">
-        <h1 md-line> {{list.comment}} </h1>
-        <p md-line>
-          <span> {{list.rating}} </span>
-        </p>
-        <p md-line>
-          <span> --{{list.author}} {{list.date | date}} </span>
-        </p>
-      </md-list-item>
-    </md-list>
-  </div>
-  <div [hidden]="dish">
+    <div fxFlex="40" *ngIf="dish">
+        <!--<p>Display the list of comments here</p>-->
+        <md-list>
+            <h3>Comments</h3>
+            <md-list-item *ngFor="let list of dish.comments">
+                <h1 md-line> {{list.comment}} </h1>
+                <p md-line>
+                    <span> {{list.rating}} </span>
+                </p>
+                <p md-line>
+                    <span> --{{list.author}} {{list.date | date}} </span>
+                </p>
+            </md-list-item>
+        </md-list>
+
+        <div flex="40">
+            <form novalidate [formGroup]="commentForm">
+                <p>
+                    <md-input-container class="full-width">
+                        <input mdInput formControlName="author" placeholder="Your name" type="text" required>
+                        <!--<md-hint>
+                        <span [hidden]="!(feedbackForm.get('firstname').hasError('required') && feedbackForm.get('firstname').touched)">
+                              firstname is required</span>
+                    </md-hint>-->
+                    </md-input-container>
+                </p>
+
+                <p>
+                    <md-input-container class="full-width">
+                        <input mdInput formControlName="rating" placeholder="Rating" type="text" required>
+                        <!--<md-hint>
+                        <span [hidden]="!(feedbackForm.get('lastname').hasError('required') && feedbackForm.get('lastname').touched)">
+                           lastname is required</span>
+                    </md-hint>-->
+                    </md-input-container>
+                </p>
+
+                <p>
+                    <md-input-container class="full-width">
+                        <textarea mdInput formControlName="comment" placeholder="Your Comment" rows=12></textarea>
+                    </md-input-container>
+                </p>
+                <button type="submit" md-button class="background-primary text-floral-white">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div [hidden]="dish">
         <md-spinner></md-spinner>
         <h4>Loading . . . Please Wait</h4>
     </div>
+
+
 
 </div>
