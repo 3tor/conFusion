@@ -64,13 +64,27 @@ export class DishdetailComponent implements OnInit {
   next: number;
   commentForm: FormGroup;
   comment: Comment;
+  formErrors = {
+    'author': '',
+    'comment': ''
+  };
+
+  validationMessages = {
+    'author': {
+      'required': 'Author is required',
+      'minlength': 'Author must be at least 2 characters long'
+    },
+    'comment': {
+      'required': 'Comment is required'
+    }
+  };
 
   constructor(private dishservice: DishService,
     private route: ActivatedRoute,
     private location: Location,
     private fb: FormBuilder) {
-      this.createCommentForm();
-     }
+    this.createCommentForm();
+  }
 
   ngOnInit() {
     // let id = +this.route.snapshot.params['id'];
@@ -94,6 +108,42 @@ export class DishdetailComponent implements OnInit {
 
   createCommentForm() {
     this.commentForm = this.fb.group({
+      rating: 5,
+      comment: ['', [Validators.required]],
+      author: ['', [Validators.required, Validators.minLength(2)]]
+    });
+
+    this.commentForm.valueChanges
+      .subscribe(data => this.onValueChanged(data));
+
+    this.onValueChanged(); //reset validation messages
+  }
+
+
+  onValueChanged(data?: any) {
+    if (!this.commentForm) { return; }
+    const form = this.commentForm;
+    for (const field in this.formErrors) {
+      //clear previous error message if any
+      this.formErrors[field] = '';
+      const control = form.get(field);
+      if (control && control.dirty && !control.valid) {
+        const messages = this.validationMessages[field];
+        for (const key in control.errors) {
+          this.formErrors[field] += messages[key] + ' ';
+        }
+      }
+    }
+  }
+
+  onSubmit() {
+    var d = new Date();
+    var n = d.toISOString();
+    console.log("new date", n);
+    this.commentForm.value.date = n;
+    this.comment = this.commentForm.value;
+    console.log(this.comment);
+    this.commentForm.reset({
       rating: '',
       comment: '',
       author: ''
